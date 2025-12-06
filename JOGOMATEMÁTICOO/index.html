@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aventura Matemágica</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head> 
+<body class="bg-blue-100 min-h-screen flex flex-col">
+    
+  <!-- Theo Tela Inicial -->
+  <div id="start-screen">
+   <button id="admin-btn"
+  class="fixed bottom-4 left-4 bg-purple-700 hover:bg-purple-800 
+         text-white font-bold py-2 px-4 rounded-xl shadow-lg
+         z-50 text-sm opacity-70 hover:opacity-100 transition">
+  🔐 Admin
+</button>
+<!-- 🔹 Modal de Senha -->
+<div id="admin-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden items-center justify-center z-50">
+  <div class="bg-white rounded-xl p-6 text-center shadow-xl max-w-sm w-full">
+    <h2 class="text-xl font-bold mb-3">Acesso Administrativo</h2>
+    <p class="mb-4">Digite a senha para apagar todo o ranking:</p>
+    <input
+      type="password"
+      id="admin-password"
+      placeholder="Senha"
+      class="border border-gray-400 rounded px-3 py-2 w-full text-center mb-4"
+    />
+    <div class="flex justify-center gap-3">
+      <button id="cancel-admin" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">Cancelar</button>
+      <button id="confirm-admin" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">Confirmar</button>
+    </div>
+    <p id="admin-feedback" class="text-sm mt-3 text-gray-600"></p>
+  </div>
+</div>
+   <!--Som-->
+    <audio id="background-music" loop>
+        <source src="sommagic2.m4a" type="audio/mpeg">
+    </audio> 
+    <!-- Sons de acerto e erro -->
+    <audio id="sound-correct" src="acertou.mp3"></audio>
+    <audio id="sound-wrong" src="errou.mp3"></audio>
+    <!--Final Som-->
+
+     <div class="mascote-container">
+      <img src="masc.png" alt="Mascote Matemático" class="mascote" />
+    </div> 
+    <h1 class="title">Matemágica</h1>
+    <button id="start-btn">Começar a aventura</button>
+    <div id="blink-stars"></div> <!-- Contêiner para estrelas piscando -->
+  </div>
+
+  <!-- Final Tela Inicial Mágica -->
+
+  <!-- Tela de identificação -->
+  <div id="name-screen" class="hidden">
+    <!-- 🔹 Botão de Administração -->
+
+    
+    <h1 class="title2">Digite seu nome:</h1>
+
+    <input
+        id="player-name"
+        type="text"
+        maxlength="15"
+        placeholder="Seu nome"/>
+
+    <!-- Botão Confirmar -->
+    <button id="confirm-name-btn">✅ Confirmar</button>
+
+    <!-- Botão Créditos -->
+    <div class="flex gap-4 mb-6">
+        <button class="creditos" name="Creditos">✨ Créditos</button>
+    </div>
+
+    
+    <!-- Tela de Créditos -->
+    <div id="credits-modal" class="hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <h2>✨ Apresentação da Equipe ✨</h2>
+            <p class="credits-info">Professor: João Roberto Ursino da Cruz<br>Universidade Cruzeiro do Sul</p>
+            <button class="scroll-btn" id="scroll-left">◀</button>
+            <button class="scroll-btn" id="scroll-right">▶</button>
+            <div class="credits-scroll" id="credits-scroll">
+                <div class="credit-card">
+                    <img src="POO.webp" alt="Aluno 1">
+                    <span>Victor Daniel</span>
+                    <p>Product Owner</p>
+                </div>
+                <div class="credit-card">
+                    <img src="SM.webp" alt="Aluno 2">
+                    <span>Augusto Silva</span>
+                    <p>Scrum Master</p>
+                </div>
+                <div class="credit-card">
+                    <img src="FEND.jfif" alt="Aluno 3">
+                    <span>Theo Salustiano</span>
+                    <p>Front-end</p>
+                </div>
+                <div class="credit-card">
+                    <img src="FE.webp" alt="Aluno 4">
+                    <span>Ana Carolina</span>
+                    <p>Front-end</p>
+                </div>
+                <div class="credit-card">
+                    <img src="BE.webp" alt="Aluno 5">
+                    <span>Anderson Santiago</span>
+                    <p>Back-end</p>
+                </div>
+                <div class="credit-card">
+                    <img src="TT.webp" alt="Aluno 6">
+                    <span>Gabriel da Rocha</span>
+                    <p>Tester</p>
+                </div>
+            </div>
+
+            <h2>Agradecimentos</h2>
+             <!--ALTERADO THEO -->
+              <p class="credits-info">
+              Muito obrigado por jogar o Matemágica!
+              Este jogo foi criado com muito carinho para que aprender matemática fosse tão divertido quanto um feitiço bem lançado!
+              Agradecemos aos professores que acreditaram na ideia, ao gestor do curso pelo apoio e a todos que ajudaram a transformar este sonho em realidade.
+              E, claro, um obrigado especial a você, pequeno mago, por embarcar nessa jornada mágica do saber! 🌟<br>
+              — Equipe Matemágica.</p>
+
+            <button id="close-credits">Fechar</button>
+        </div>
+    </div>
+    
+</div>
+
+<!-- MASCOTE E BALAO DE FALA_ANA tela de identificação-->
+<div id="mascot-container" class="hidden">
+    <img src="coelho_magicoo.png" alt="Mascote mágico" id="mascot-img">
+    <div id="speech-bubble">Sem seu nome, meu chapéu não faz magia!
+        Digite seu nome!🎩💫</div>
+  </div>
+
+<!--Final tela de identificação-->
+
+
+<!--Tela de jogo-->
+<main id="game-container" class="hidden">
+
+    <div id="game-controls" class="absolute top-4 left-4 flex gap-2 z-50">
+    <!-- Botão de Home -->
+        <button id="game-home-btn" class="bg-purple-600 w-12 h-12 rounded-full flex items-center justify-center shadow-lg text-white text-xl">🏠</button>
+    </div>
+
+
+    <!-- confirmação HOME -->
+    <div id="home-modal" class="hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+        <p>Tem certeza que deseja sair do jogo e voltar ao início?</p>
+        <div class="modal-buttons">
+            <button id="confirm-home" class="btn-confirm">Sim</button>
+            <button id="cancel-home" class="btn-cancel">Não</button>
+        </div>
+        </div>
+    </div>
+
+
+    <div id="game-volume-container" class="absolute top-4 right-4 z-50">
+        <!-- Botão de volume -->
+        <button id="game-volume-btn" class="bg-yellow-300 w-12 h-12 rounded-full flex items-center justify-center shadow-lg text-xl">🔊</button>
+    </div>  
+
+    
+
+    
+    <!-- Container do jogo -->
+    <div id="game-box" class="flex">
+        <div class="magic-fog"></div>
+        <div id="magic-sparkles"></div>
+        <h1 id="game-title">🧮 Desafio Matemático 🧮</h1>
+        <div id="progress-bar-container">
+            <div id="progress-bar"></div>
+        </div>
+
+        <section id="game-content">
+            <div id="question-area">
+                <div id="question"></div>
+                <div id="options-grid"></div>
+            </div>
+            <div id="feedback-message"></div>
+        </section>
+
+        <div id="score-display">
+            Pontuação: <span id="score">0</span> 
+        </div>
+        </div>
+    </div>
+
+    <img src="magoo.png" alt="Mascote" id="mascote-game">
+
+
+    <div id="mascote-game-container" aria-hidden="true">
+        <div id="mascot-game-bubble" class="mascot-bubble" role="status">Mensagem</div>
+    </div>
+
+</main>
+
+
+<!-- Fase Oculta (acontece somente para quem atingir 8+ pontos) -->
+<!--  Fase Oculta - Desafio Secreto -->
+<section id="fase-oculta" class="hidden">
+  <div class="oculta-container">
+    <h1 class="oculta-titulo">✨ Fase Oculta Desbloqueada! ✨</h1>
+    <p class="oculta-texto">Você provou seu poder matemágico e desbloqueou o desafio secreto!</p>
+
+    <div id="pergunta-oculta-area">
+      <p id="pergunta-oculta"></p>
+      <div id="opcoes-ocultas"></div>
+    </div>
+
+    <p id="pontuacao-oculta">Pontuação: <span id="score-oculta">0</span>
+
+    <button id="btn-finalizar-oculta" class="oculta-btn hidden">Finalizar Desafio Oculto 🪄</button>
+  </div>
+</section>
+
+
+
+<!-- TELA DE RANKING - FIM DE JOGO - ANAA -->
+<section>
+    <!-- Tela de Ranking Mágico -->
+<div id="end-screen" class="hidden relative">
+    <div class="ranking-background"></div>
+
+    <!-- Pergaminho Central -->
+  <div class="scroll-container">
+    <img src="pergaminhoo.png" alt="Pergaminho mágico" class="scroll-image">
+
+    <div class="scroll-content">
+      <h2 class="scroll-title">
+        <span>Jogo</span>
+        <span>Finalizado!</span>
+    </h2>
+      <p class="score-text">Sua pontuação final</p>
+      <p id="final-score-text">7 de 10</p>
+
+      <button id="scroll-continue-btn" class="scroll-btn">Jogar Novamente</button>
+    </div>
+  </div>
+  
+    <!-- Pódio -->
+   <!-- TOP 3-->
+   <!-- Esses <p> receberão os nomes/pontos dinamicamente dentro do JS-->
+   <div class="podium-info">
+  <div class="player second">
+    <h3>2° Lugar</h3>
+    <p class="player-name" id="name-second">/</p>
+    <p class="player-level" id="level-second">/</p>
+    <p class="player-score" id="score-second">/</p>
+  </div>
+
+  <div class="player first">
+    <h3>1° Lugar</h3>
+    <p class="player-name" id="name-first">/</p>
+    <p class="player-level" id="level-first">/</p>
+    <p class="player-score" id="score-first">/</p>
+  </div>
+
+  <div class="player third">
+    <h3>3° Lugar</h3>
+    <p class="player-name" id="name-third">/</p>
+    <p class="player-level" id="level-third">/</p>
+    <p class="player-score" id="score-third">/</p>
+  </div>
+</div>
+
+
+  <!-- container dos pergaminhos menores; TOP 3-->
+   <div class="top3-container">
+  <img src="pergaminho_2lugar.png" alt="2º Lugar" class="scroll scroll-2">
+  <img src="pergaminho_1lugar.png" alt="1º Lugar" class="scroll scroll-1">
+  <img src="pergaminho_3lugar.png" alt="3º Lugar" class="scroll scroll-3">
+</div>
+    <div class="podium-container">
+        <img src="pódio.png" alt="Pódio mágico" class="podium-image">
+      </div>
+    <!-- Listas laterais -->
+     <div class="ranking-columns">
+        <!--coluna da esquerda-->
+        <div class="ranking-column left-column">
+            <div class="scroll small-scroll" id="scroll-1">
+        <div class="flex items-center">
+            <span class="nivel-icon" data-incon="lua">🌙</span>
+            <h3>//</h3>
+        </div>
+        <p>//</p>
+        <div class="crystals">//</div>
+    </div>
+
+
+    <div class="scroll small-scroll" id="scroll-2">
+        <div class="flex items-center">
+            <span class="nivel-icon" data-incon="estrela">🌟</span>
+            <h3>//</h3>
+        </div>
+        <p>//</p>
+        <div class="crystals">//</div>
+    </div>
+
+
+    <div class="scroll small-scroll" id="scroll-3">
+        <div class="flex items-center">
+            <span class="nivel-icon" data-incon="caldeirao">🧪</span>
+            <h3>//</h3>
+        </div>
+        <p>//</p>
+        <div class="crystals">//</div>
+    </div>
+
+
+    <div class="scroll small-scroll" id="scroll-4">
+      <div class="flex items-center">
+        <span class="nivel-icon" data-icon="lua">🌙</span>
+        <h3>//</h3>
+      </div>
+      <p>//</p>
+      <div class="crystals">//</div>
+    </div>
+    </div>
+        </div>
+        
+    <!--coluna da direita-->
+   <div class="ranking-column right-column">
+    <div class="scroll small-scroll" id="scroll-5">
+      <div class="flex items-center">
+        <span class="nivel-icon" data-icon="estrela">🌟</span>
+        <h3>//</h3>
+      </div>
+      <p>//</p>
+      <div class="crystals">//</div>
+    </div>
+
+
+    <div class="scroll small-scroll" id="scroll-6">
+      <div class="flex items-center">
+        <span class="nivel-icon" data-icon="caldeirao">⚗️</span>
+        <h3>//</h3>
+      </div>
+      <p>//</p>
+      <div class="crystals">//</div>
+    </div>
+
+
+    <div class="scroll small-scroll" id="scroll-7">
+      <div class="flex items-center">
+        <span class="nivel-icon" data-icon="caldeirao">🕯️</span>
+        <h3>//</h3>
+      </div>
+      <p>//</p>
+      <div class="crystals">//</div>
+    </div>
+
+
+    <div class="scroll small-scroll" id="scroll-8">
+      <div class="flex items-center">
+        <span class="nivel-icon" data-icon="caldeirao">🧙</span>
+        <h3>//</h3>
+      </div>
+      <p>//</p>
+      <div class="crystals">//</div>
+    </div>
+</div>
+   </div>
+    </div>
+   <!-- <div class="crystals two-stars">⭐⭐</div>
+    <div class="crystals one-star">⭐</div>
+    <div class="crystals three-stars">⭐⭐⭐</div>
+    <div class="crystals three-stars">⭐⭐⭐</div>
+    <div class="crystals two-stars">⭐⭐</div>
+    <div class="crystals two-stars">⭐⭐</div>
+    <div class="crystals three-stars">⭐⭐⭐</div>
+    <div class="crystals three-stars">⭐⭐⭐</div> -->
+</section>
+
+
+<!--Final Tela de jogo-->
+<script src="perguntas.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
+
+
+
+<!--
+    TELA INICIAL OK - NADA A ALTERAR
+    Tela IDENTIFICAÇÃO OK - NADA A ALTERAR (se der tempo Colocar um min/max de letras no nome)
+-->
+
+
+
+<!--
+    TELA DE JOGO    
+    barra de nivel - centralizado,borda arredondada e a cor de acordo com a dificuldade das perguntas
+-->
